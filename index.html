@@ -7,7 +7,7 @@
     <title>ChainPaper - Whitepaper Archive</title>
     <link rel="icon" href="./favicon.webp" type="image/webp">
     <style>
-        * { /* Added this rule */
+        * {
             box-sizing: border-box;
         }
         body {
@@ -17,8 +17,8 @@
             background-color: #ffffff;
             color: #000000;
             line-height: 1.5;
-            overflow-y: auto; /* Scrollbar vertical solo se necessario */
-            overflow-x: hidden; /* Nascondi scrollbar orizzontale */
+            overflow-y: auto;
+            overflow-x: hidden;
         }
         .container {
             display: flex;
@@ -140,6 +140,9 @@
         .github-link-container a:hover svg {
             fill: #0000ff; 
         }
+        .hidden {
+            display: none !important;
+        }
     </style>
 </head>
 <body>
@@ -164,15 +167,15 @@
             </header>
 
             <section id="pdf-display-area">
-                <ul id="pdfListContainer">
+                <ul id="pdfListContainer" class="hidden">
                 </ul>
-                <p id="noFilesMessage" class="message" style="display: none;">
+                <p id="noFilesMessage" class="message hidden">
                     No PDF files available in this section.
                 </p>
-                 <p id="selectSectionMessage" class="message" style="display: none;">
+                 <p id="selectSectionMessage" class="message hidden">
                     Please select a section from the sidebar to view PDFs.
                 </p>
-                 <p id="loadingMessage" class="message" style="display: block;">
+                 <p id="loadingMessage" class="message">
                     Loading documents...
                 </p>
             </section>
@@ -192,18 +195,18 @@
         function renderPdfsForSection(sectionName) {
             currentSectionTitleElement.textContent = sectionName;
             pdfListUl.innerHTML = ''; 
-            selectSectionMessage.style.display = 'none';
-            noFilesMessage.style.display = 'none';
-            pdfListUl.style.display = 'block';
-
+            
+            noFilesMessage.classList.add('hidden');
+            selectSectionMessage.classList.add('hidden');
             const files = sitePdfData[sectionName];
 
             if (!files || files.length === 0) {
-                noFilesMessage.style.display = 'block';
-                pdfListUl.style.display = 'none'; 
+                noFilesMessage.classList.remove('hidden');
+                pdfListUl.classList.add('hidden'); 
                 return;
             }
             
+            pdfListUl.classList.remove('hidden');
             files.forEach(file => {
                 const listItem = document.createElement('li');
                 listItem.className = 'file-item';
@@ -249,10 +252,11 @@
         }
 
         document.addEventListener('DOMContentLoaded', () => {
-            loadingMessage.style.display = 'block';
-            noFilesMessage.style.display = 'none';
-            selectSectionMessage.style.display = 'none';
-            pdfListUl.style.display = 'none';
+            loadingMessage.classList.remove('hidden'); // Mostra il messaggio di caricamento
+            pdfListUl.classList.add('hidden');
+            noFilesMessage.classList.add('hidden');
+            selectSectionMessage.classList.add('hidden');
+
 
             fetch('./manifest.json')
                 .then(response => {
@@ -263,7 +267,7 @@
                 })
                 .then(data => {
                     sitePdfData = data;
-                    loadingMessage.style.display = 'none';
+                    loadingMessage.classList.add('hidden'); // Nascondi il messaggio di caricamento
                     const sectionNames = Object.keys(sitePdfData);
                     
                     if (sectionNames.length > 0) {
@@ -272,20 +276,16 @@
                     } else {
                         currentSectionTitleElement.textContent = "No Sections Available";
                         selectSectionMessage.textContent = "There are no sections or PDF files to display.";
-                        selectSectionMessage.style.display = 'block';
+                        selectSectionMessage.classList.remove('hidden');
                     }
                 })
                 .catch(error => {
                     console.error("Could not load manifest.json:", error);
-                    loadingMessage.style.display = 'none';
+                    loadingMessage.classList.add('hidden');
                     currentSectionTitleElement.textContent = "Error";
                     selectSectionMessage.textContent = "Could not load document data. Please try again later.";
-                    selectSectionMessage.style.display = 'block';
+                    selectSectionMessage.classList.remove('hidden');
                 });
-
-            noFilesMessage.textContent = "No PDF files available in this section.";
-            selectSectionMessage.textContent = "Please select a section from the sidebar to view PDFs.";
-            loadingMessage.textContent = "Loading documents...";
         });
     </script>
 </body>

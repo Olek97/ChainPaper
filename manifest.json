@@ -17,6 +17,40 @@
       "size": "919KB"
     }
   ],
+  "Litecoin": [
+    {
+      "id": "litecoin-litecoin",
+      "name": "litecoin.pdf",
+      "title": "litecoin",
+      "path": "./papers/Litecoin/litecoin.pdf",
+      "size": "421KB"
+    }
+  ],
+  "PIVX": [
+    {
+      "id": "pivx-pivxeconomicswhitepaper",
+      "name": "PIVX_Economics_Whitepaper.pdf",
+      "title": "PIVX Economics Whitepaper",
+      "path": "./papers/PIVX/PIVX_Economics_Whitepaper.pdf",
+      "size": "400KB"
+    },
+    {
+      "id": "pivx-pivxnontechnicalwhitepaper",
+      "name": "PIVX_Non_Technical_Whitepaper.pdf",
+      "title": "PIVX Non Technical Whitepaper",
+      "path": "./papers/PIVX/PIVX_Non_Technical_Whitepaper.pdf",
+      "size": "983KB"
+    }
+  ],
+  "Solana": [
+    {
+      "id": "solana-solanawhitepaper",
+      "name": "solana-whitepaper.pdf",
+      "title": "solana-whitepaper",
+      "path": "./papers/Solana/solana-whitepaper.pdf",
+      "size": "673KB"
+    }
+  ],
   "Zcash": [
     {
       "id": "zcash-zcashprotocolspecification",

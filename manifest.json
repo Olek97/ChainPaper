@@ -1,0 +1,11 @@
+{
+  "Bitcoin": [
+    {
+      "id": "bitcoin-bitcoinapeertopeerelectroniccashsystem",
+      "name": "Bitcoin A Peer-to-Peer Electronic Cash System.pdf",
+      "title": "Bitcoin A Peer-to-Peer Electronic Cash System",
+      "path": "./papers/Bitcoin/Bitcoin A Peer-to-Peer Electronic Cash System.pdf",
+      "size": "180KB"
+    }
+  ]
+}

@@ -7,5 +7,23 @@
       "path": "./papers/Bitcoin/Bitcoin A Peer-to-Peer Electronic Cash System.pdf",
       "size": "180KB"
     }
+  ],
+  "Ethereum": [
+    {
+      "id": "ethereum-ethereumwhitepaperbuterin2014",
+      "name": "Ethereum_Whitepaper_-_Buterin_2014.pdf",
+      "title": "Ethereum Whitepaper - Buterin 2014",
+      "path": "./papers/Ethereum/Ethereum_Whitepaper_-_Buterin_2014.pdf",
+      "size": "919KB"
+    }
+  ],
+  "Zcash": [
+    {
+      "id": "zcash-zcashprotocolspecification",
+      "name": "Zcash_Protocol_Specification.pdf",
+      "title": "Zcash Protocol Specification",
+      "path": "./papers/Zcash/Zcash_Protocol_Specification.pdf",
+      "size": "3217KB"
+    }
   ]
 }

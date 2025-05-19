@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="ChainPaper: An open-source, collaborative archive of key blockchain and cryptocurrency whitepapers and documents. Browse by section, download the papers you're interested in, and contribute by adding new documents!">
+    <title>ChainPaper - Whitepaper Archive</title>
+    <link rel="icon" href="./favicon.webp" type="image/webp">
+    <style>
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #ffffff;
+            color: #000000;
+            line-height: 1.5;
+        }
+        .container {
+            display: flex;
+            width: 100%;
+        }
+        aside {
+            width: 200px;
+            padding: 15px;
+            border-right: 1px solid #cccccc;
+            min-height: 100vh;
+            background-color: #f0f0f0;
+        }
+        main {
+            flex-grow: 1;
+            padding: 15px;
+        }
+        h1 {
+            font-size: 24px;
+            color: #000000;
+            margin-top: 0;
+        }
+        h2 {
+            font-size: 20px;
+            border-bottom: 1px solid #cccccc;
+            padding-bottom: 5px;
+            margin-top: 0;
+            margin-bottom: 15px;
+        }
+        h3 {
+            font-size: 16px;
+            margin-top: 0;
+            margin-bottom: 5px;
+        }
+        p {
+            margin-top: 0;
+            margin-bottom: 10px;
+        }
+        nav ul, #pdfListContainer {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+        }
+        nav li a {
+            text-decoration: none;
+            color: #0000ff;
+            display: block;
+            padding: 5px 0;
+        }
+        nav li a:hover {
+            text-decoration: underline;
+            color: #ff0000;
+        }
+        nav li a.active {
+            font-weight: bold;
+            color: #000000;
+            text-decoration: none;
+        }
+        .file-item {
+            border: 1px solid #dddddd;
+            padding: 10px;
+            margin-bottom: 10px;
+            background-color: #f9f9f9;
+        }
+        .file-item p {
+            font-size: 14px;
+            margin: 3px 0;
+        }
+        .download-link {
+            text-decoration: none;
+            color: #0000ff;
+            font-weight: bold;
+            display: inline-block;
+            padding: 3px 6px;
+            border: 1px solid #0000ff;
+            background-color: #e0e0ff;
+        }
+        .download-link:hover {
+            background-color: #d0d0ff;
+            text-decoration: underline;
+        }
+        .message {
+            color: #333333;
+            font-style: italic;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <aside>
+            <h1>ChainPaper</h1>
+            <nav id="sectionList">
+                <ul></ul>
+            </nav>
+        </aside>
+
+        <main>
+            <header>
+                <h2 id="currentSectionTitle"></h2>
+            </header>
+
+            <section id="pdf-display-area">
+                <ul id="pdfListContainer">
+                </ul>
+                <p id="noFilesMessage" class="message" style="display: none;">
+                    No PDF files available in this section.
+                </p>
+                 <p id="selectSectionMessage" class="message" style="display: none;">
+                    Please select a section from the sidebar to view PDFs.
+                </p>
+                 <p id="loadingMessage" class="message" style="display: block;">
+                    Loading documents...
+                </p>
+            </section>
+        </main>
+    </div>
+
+    <script>
+        const sectionListUl = document.querySelector('#sectionList ul');
+        const pdfListUl = document.getElementById('pdfListContainer');
+        const noFilesMessage = document.getElementById('noFilesMessage');
+        const selectSectionMessage = document.getElementById('selectSectionMessage');
+        const loadingMessage = document.getElementById('loadingMessage');
+        const currentSectionTitleElement = document.getElementById('currentSectionTitle');
+        let activeSection = null;
+        let sitePdfData = {};
+
+        function renderPdfsForSection(sectionName) {
+            currentSectionTitleElement.textContent = sectionName;
+            pdfListUl.innerHTML = ''; 
+            selectSectionMessage.style.display = 'none';
+            noFilesMessage.style.display = 'none';
+            pdfListUl.style.display = 'block';
+
+            const files = sitePdfData[sectionName];
+
+            if (!files || files.length === 0) {
+                noFilesMessage.style.display = 'block';
+                pdfListUl.style.display = 'none'; 
+                return;
+            }
+            
+            files.forEach(file => {
+                const listItem = document.createElement('li');
+                listItem.className = 'file-item';
+                
+                let content = `<h3>${file.title || file.name}</h3>`;
+                if (file.size) {
+                    content += `<p><em>Size:</em> ${file.size}</p>`;
+                }
+                content += `<p><a href="${file.path}" download="${file.name}" class="download-link">Download Document</a></p>`;
+                
+                listItem.innerHTML = content;
+                pdfListUl.appendChild(listItem);
+            });
+        }
+
+        function renderSectionLinks() {
+            sectionListUl.innerHTML = ''; 
+            Object.keys(sitePdfData).forEach(sectionName => {
+                const listItem = document.createElement('li');
+                const link = document.createElement('a');
+                link.href = '#';
+                link.textContent = sectionName;
+                if (sectionName === activeSection) {
+                    link.classList.add('active');
+                }
+
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    setActiveSection(sectionName);
+                    renderPdfsForSection(sectionName);
+                });
+                listItem.appendChild(link);
+                sectionListUl.appendChild(listItem);
+            });
+        }
+
+        function setActiveSection(sectionName) {
+            activeSection = sectionName;
+            renderSectionLinks(); 
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            loadingMessage.style.display = 'block';
+            noFilesMessage.style.display = 'none';
+            selectSectionMessage.style.display = 'none';
+            pdfListUl.style.display = 'none';
+
+            fetch('./manifest.json')
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    sitePdfData = data;
+                    loadingMessage.style.display = 'none';
+                    const sectionNames = Object.keys(sitePdfData);
+                    
+                    if (sectionNames.length > 0) {
+                        setActiveSection(sectionNames[0]); 
+                        renderPdfsForSection(activeSection); 
+                    } else {
+                        currentSectionTitleElement.textContent = "No Sections Available";
+                        selectSectionMessage.textContent = "There are no sections or PDF files to display.";
+                        selectSectionMessage.style.display = 'block';
+                    }
+                })
+                .catch(error => {
+                    console.error("Could not load manifest.json:", error);
+                    loadingMessage.style.display = 'none';
+                    currentSectionTitleElement.textContent = "Error";
+                    selectSectionMessage.textContent = "Could not load document data. Please try again later.";
+                    selectSectionMessage.style.display = 'block';
+                });
+
+            noFilesMessage.textContent = "No PDF files available in this section.";
+            selectSectionMessage.textContent = "Please select a section from the sidebar to view PDFs.";
+            loadingMessage.textContent = "Loading documents...";
+        });
+    </script>
+</body>
+</html>

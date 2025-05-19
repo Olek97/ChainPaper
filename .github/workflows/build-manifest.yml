@@ -1,0 +1,40 @@
+name: Build and Deploy PDF Manifest
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'papers/**'
+      - '.github/workflows/build-manifest.yml'
+      - 'build_manifest.js'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Run build script
+        run: node build_manifest.js
+
+      - name: Commit and push manifest.json
+        run: |
+          git config --global user.name 'GitHub Actions Bot'
+          git config --global user.email 'actions@github.com'
+          git add manifest.json
+          if ! git diff --staged --quiet; then
+            git commit -m "Autogenerate manifest.json"
+            git push
+          else
+            echo "No changes to manifest.json. No commit needed."
+          fi
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

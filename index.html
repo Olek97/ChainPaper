@@ -17,34 +17,41 @@
             background-color: #ffffff;
             color: #000000;
             line-height: 1.5;
-            overflow-y: auto;
+            overflow-y: auto; 
             overflow-x: hidden;
         }
         .container {
             display: flex;
             width: 100%;
+            height: 100vh; 
         }
         aside {
             width: 200px;
             padding: 15px;
             border-right: 1px solid #cccccc;
-            min-height: 100vh; 
             background-color: #f0f0f0;
             display: flex; 
             flex-direction: column; 
+            flex-shrink: 0; 
+            height: 100%; 
         }
         nav#sectionList {
             flex-grow: 1; 
+            overflow-y: auto; 
+            margin-bottom: 15px; 
         }
         main {
             flex-grow: 1;
             padding: 15px;
+            overflow-y: auto; 
         }
         h1 {
             font-size: 24px;
             color: #000000;
             margin-top: 0;
             margin-bottom: 20px; 
+            flex-shrink: 0; 
+            text-align: center;
         }
         h2 {
             font-size: 20px;
@@ -99,6 +106,7 @@
             padding: 3px 6px;
             border: 1px solid;
             margin-right: 5px;
+            margin-bottom: 5px; 
         }
         .download-link {
             color: #0000ff;
@@ -124,9 +132,10 @@
             margin-top: 20px;
         }
         .github-link-container {
-            margin-top: auto; 
-            padding-top: 20px; 
+            padding-top: 15px; 
             text-align: center; 
+            border-top: 1px solid #cccccc; 
+            flex-shrink: 0; 
         }
         .add-paper-button {
             display: inline-block;
@@ -146,6 +155,39 @@
         }
         .hidden {
             display: none !important;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+                height: auto; 
+            }
+            aside {
+                width: 100%;
+                height: auto; 
+                min-height: 0; 
+                border-right: none;
+                border-bottom: 1px solid #cccccc;
+                padding: 10px; 
+            }
+            nav#sectionList {
+                max-height: 200px; 
+                overflow-y: auto;
+            }
+            main {
+                padding: 10px; 
+            }
+            h1 {
+                font-size: 20px; 
+                margin-bottom: 15px;
+            }
+            h2 {
+                font-size: 18px; 
+            }
+            .github-link-container {
+                padding-top: 15px;
+                padding-bottom: 10px; 
+            }
         }
     </style>
 </head>

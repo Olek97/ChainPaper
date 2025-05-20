@@ -1,10 +1,19 @@
 {
+  "Basic Attention Token": [
+    {
+      "id": "basic attention token-basicattentiontokenwhitepaper4",
+      "name": "Basic_Attention_Token_WhitePaper-4.pdf",
+      "title": "Basic Attention Token WhitePaper-4",
+      "path": "./papers/Basic Attention Token/Basic_Attention_Token_WhitePaper-4.pdf",
+      "size": "4365KB"
+    }
+  ],
   "Bitcoin": [
     {
       "id": "bitcoin-bitcoinapeertopeerelectroniccashsystem",
-      "name": "Bitcoin A Peer-to-Peer Electronic Cash System.pdf",
+      "name": "Bitcoin_A_Peer-to-Peer_Electronic_Cash_System.pdf",
       "title": "Bitcoin A Peer-to-Peer Electronic Cash System",
-      "path": "./papers/Bitcoin/Bitcoin A Peer-to-Peer Electronic Cash System.pdf",
+      "path": "./papers/Bitcoin/Bitcoin_A_Peer-to-Peer_Electronic_Cash_System.pdf",
       "size": "180KB"
     }
   ],
@@ -19,11 +28,20 @@
   ],
   "Litecoin": [
     {
-      "id": "litecoin-litecoin",
-      "name": "litecoin.pdf",
-      "title": "litecoin",
-      "path": "./papers/Litecoin/litecoin.pdf",
+      "id": "litecoin-litecoinwhitepaper",
+      "name": "litecoin_whitepaper.pdf",
+      "title": "litecoin whitepaper",
+      "path": "./papers/Litecoin/litecoin_whitepaper.pdf",
       "size": "421KB"
+    }
+  ],
+  "NYM": [
+    {
+      "id": "nym-nymwhitepaper",
+      "name": "nym-whitepaper.pdf",
+      "title": "nym-whitepaper",
+      "path": "./papers/NYM/nym-whitepaper.pdf",
+      "size": "1306KB"
     }
   ],
   "PIVX": [

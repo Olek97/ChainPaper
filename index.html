@@ -17,41 +17,78 @@
             background-color: #ffffff;
             color: #000000;
             line-height: 1.5;
-            overflow-y: auto; 
-            overflow-x: hidden;
         }
         .container {
             display: flex;
             width: 100%;
-            height: 100vh; 
+            min-height: 100vh;
         }
+
+        .hamburger-menu {
+            display: none;
+            position: fixed;
+            top: 15px;
+            right: 15px;
+            z-index: 1001;
+            background: #f0f0f0;
+            border: 1px solid #ccc;
+            padding: 8px 12px;
+            cursor: pointer;
+            font-size: 24px;
+            line-height: 1;
+            border-radius: 5px;
+        }
+
         aside {
             width: 200px;
             padding: 15px;
             border-right: 1px solid #cccccc;
             background-color: #f0f0f0;
-            display: flex; 
-            flex-direction: column; 
-            flex-shrink: 0; 
-            height: 100%; 
+            display: flex;
+            flex-direction: column;
+            flex-shrink: 0;
+            height: 100vh;
+            position: sticky;
+            top: 0;
         }
+
+        .close-sidebar-btn {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 30px;
+            line-height: 1;
+            cursor: pointer;
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            color: #555;
+            padding: 5px;
+            z-index: 10;
+        }
+        .close-sidebar-btn:hover {
+            color: #000;
+        }
+
         nav#sectionList {
-            flex-grow: 1; 
-            overflow-y: auto; 
-            margin-bottom: 15px; 
+            flex-grow: 1;
+            overflow-y: auto;
+            margin-bottom: 15px;
         }
         main {
             flex-grow: 1;
             padding: 15px;
-            overflow-y: auto; 
+            overflow-y: auto;
+            height: 100vh;
         }
         h1 {
             font-size: 24px;
             color: #000000;
             margin-top: 0;
-            margin-bottom: 20px; 
-            flex-shrink: 0; 
+            margin-bottom: 20px;
+            flex-shrink: 0;
             text-align: center;
+            padding-right: 30px;
         }
         h2 {
             font-size: 20px;
@@ -78,16 +115,18 @@
             text-decoration: none;
             color: #0000ff;
             display: block;
-            padding: 5px 0;
+            padding: 8px 5px;
         }
         nav li a:hover {
             text-decoration: underline;
             color: #ff0000;
+            background-color: #e0e0e0;
         }
         nav li a.active {
             font-weight: bold;
             color: #000000;
             text-decoration: none;
+            background-color: #d0d0d0;
         }
         .file-item {
             border: 1px solid #dddddd;
@@ -106,7 +145,7 @@
             padding: 3px 6px;
             border: 1px solid;
             margin-right: 5px;
-            margin-bottom: 5px; 
+            margin-bottom: 5px;
         }
         .download-link {
             color: #0000ff;
@@ -132,10 +171,10 @@
             margin-top: 20px;
         }
         .github-link-container {
-            padding-top: 15px; 
-            text-align: center; 
-            border-top: 1px solid #cccccc; 
-            flex-shrink: 0; 
+            padding-top: 15px;
+            text-align: center;
+            border-top: 1px solid #cccccc;
+            flex-shrink: 0;
         }
         .add-paper-button {
             display: inline-block;
@@ -157,43 +196,74 @@
             display: none !important;
         }
 
+        .overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 999;
+        }
+
         @media (max-width: 768px) {
-            .container {
-                flex-direction: column;
-                height: auto; 
+            .hamburger-menu {
+                display: block;
             }
+
             aside {
-                width: 100%;
-                height: auto; 
-                min-height: 0; 
-                border-right: none;
-                border-bottom: 1px solid #cccccc;
-                padding: 10px; 
-            }
-            nav#sectionList {
-                max-height: 200px; 
+                position: fixed;
+                top: 0;
+                left: -260px;
+                width: 260px;
+                height: 100vh;
+                z-index: 1000;
+                border-right: 1px solid #cccccc;
+                border-bottom: none;
+                transition: left 0.3s ease-in-out;
                 overflow-y: auto;
+                box-shadow: none;
             }
+
+            aside.open {
+                left: 0;
+                box-shadow: 3px 0px 10px rgba(0,0,0,0.2);
+            }
+
+            .close-sidebar-btn {
+                display: block;
+            }
+
             main {
-                padding: 10px; 
+                padding: 15px;
             }
+
             h1 {
-                font-size: 20px; 
+                font-size: 20px;
                 margin-bottom: 15px;
+                position: relative;
             }
             h2 {
-                font-size: 18px; 
+                font-size: 18px;
             }
             .github-link-container {
                 padding-top: 15px;
-                padding-bottom: 10px; 
+                padding-bottom: 10px;
+            }
+
+            nav#sectionList {
+                max-height: none;
             }
         }
     </style>
 </head>
 <body>
+    <button class="hamburger-menu" aria-label="Open menu" aria-expanded="false" aria-controls="sidebar">&#9776;</button>
+
     <div class="container">
-        <aside>
+        <aside id="sidebar">
+            <button class="close-sidebar-btn" aria-label="Close menu" aria-controls="sidebar">&times;</button>
             <h1>ChainPaper</h1>
             <nav id="sectionList">
                 <ul></ul>
@@ -211,20 +281,20 @@
             </header>
 
             <section id="pdf-display-area">
-                <ul id="pdfListContainer" class="hidden">
-                </ul>
+                <ul id="pdfListContainer" class="hidden"></ul>
                 <p id="noFilesMessage" class="message hidden">
                     No PDF files available in this section.
                 </p>
-                 <p id="selectSectionMessage" class="message hidden">
+                <p id="selectSectionMessage" class="message hidden">
                     Please select a section from the sidebar to view PDFs.
                 </p>
-                 <p id="loadingMessage" class="message">
+                <p id="loadingMessage" class="message">
                     Loading documents...
                 </p>
             </section>
         </main>
     </div>
+    <div class="overlay"></div>
 
     <script>
         const sectionListUl = document.querySelector('#sectionList ul');
@@ -233,46 +303,91 @@
         const selectSectionMessage = document.getElementById('selectSectionMessage');
         const loadingMessage = document.getElementById('loadingMessage');
         const currentSectionTitleElement = document.getElementById('currentSectionTitle');
+
         let activeSection = null;
         let sitePdfData = {};
 
+        const hamburgerMenu = document.querySelector('.hamburger-menu');
+        const sidebar = document.getElementById('sidebar');
+        const closeSidebarBtn = document.querySelector('.close-sidebar-btn');
+        const overlay = document.querySelector('.overlay');
+
+        function openSidebar() {
+            if (sidebar && overlay && hamburgerMenu) {
+                sidebar.classList.add('open');
+                overlay.style.display = 'block';
+                hamburgerMenu.setAttribute('aria-expanded', 'true');
+            }
+        }
+
+        function closeSidebar() {
+            if (sidebar && overlay && hamburgerMenu) {
+                sidebar.classList.remove('open');
+                overlay.style.display = 'none';
+                hamburgerMenu.setAttribute('aria-expanded', 'false');
+            }
+        }
+
+        if (hamburgerMenu && sidebar && closeSidebarBtn && overlay) {
+            hamburgerMenu.addEventListener('click', () => {
+                if (sidebar.classList.contains('open')) {
+                    closeSidebar();
+                } else {
+                    openSidebar();
+                }
+            });
+            closeSidebarBtn.addEventListener('click', () => {
+                closeSidebar();
+            });
+            overlay.addEventListener('click', () => {
+                closeSidebar();
+            });
+        }
+
         function renderPdfsForSection(sectionName) {
             currentSectionTitleElement.textContent = sectionName;
-            pdfListUl.innerHTML = ''; 
-            
+            pdfListUl.innerHTML = '';
+
             noFilesMessage.classList.add('hidden');
             selectSectionMessage.classList.add('hidden');
+            pdfListUl.classList.remove('hidden');
 
             const files = sitePdfData[sectionName];
 
             if (!files || files.length === 0) {
                 noFilesMessage.classList.remove('hidden');
-                pdfListUl.classList.add('hidden'); 
+                pdfListUl.classList.add('hidden');
                 return;
             }
-            
-            pdfListUl.classList.remove('hidden');
+
             files.forEach(file => {
                 const listItem = document.createElement('li');
                 listItem.className = 'file-item';
-                
+
                 let content = `<h3>${file.title || file.name}</h3>`;
                 if (file.size) {
                     content += `<p><em>Size:</em> ${file.size}</p>`;
                 }
                 content += `<p>
                                 <a href="${file.path}" target="_blank" class="action-link view-link">View</a>
-                                <a href="${file.path}" download="${file.name}" class="action-link download-link">Download Document</a>
-                           </p>`;
-                
+                                <a href="${file.path}" download="${file.name}" class="action-link download-link">Download</a>
+                            </p>`;
+
                 listItem.innerHTML = content;
                 pdfListUl.appendChild(listItem);
             });
         }
 
+        function setActiveSection(sectionName) {
+            activeSection = sectionName;
+            renderSectionLinks();
+        }
+
         function renderSectionLinks() {
-            sectionListUl.innerHTML = ''; 
-            Object.keys(sitePdfData).forEach(sectionName => {
+            sectionListUl.innerHTML = '';
+            const sections = Object.keys(sitePdfData);
+
+            sections.forEach(sectionName => {
                 const listItem = document.createElement('li');
                 const link = document.createElement('a');
                 link.href = '#';
@@ -285,15 +400,13 @@
                     e.preventDefault();
                     setActiveSection(sectionName);
                     renderPdfsForSection(sectionName);
+                    if (window.innerWidth <= 768 && sidebar.classList.contains('open')) {
+                        closeSidebar();
+                    }
                 });
                 listItem.appendChild(link);
                 sectionListUl.appendChild(listItem);
             });
-        }
-
-        function setActiveSection(sectionName) {
-            activeSection = sectionName;
-            renderSectionLinks(); 
         }
 
         document.addEventListener('DOMContentLoaded', () => {
@@ -301,6 +414,12 @@
             pdfListUl.classList.add('hidden');
             noFilesMessage.classList.add('hidden');
             selectSectionMessage.classList.add('hidden');
+
+            if (window.innerWidth <= 768 && sidebar && hamburgerMenu && overlay) {
+                sidebar.classList.remove('open');
+                overlay.style.display = 'none';
+                hamburgerMenu.setAttribute('aria-expanded', 'false');
+            }
 
             fetch('./manifest.json')
                 .then(response => {
@@ -313,20 +432,35 @@
                     sitePdfData = data;
                     loadingMessage.classList.add('hidden');
                     const sectionNames = Object.keys(sitePdfData);
-                    
-                    if (sectionNames.length > 0) {
-                        setActiveSection(sectionNames[0]); 
-                        renderPdfsForSection(activeSection); 
+
+                    let initialSection = null;
+                    if (sectionNames.includes('Bitcoin')) {
+                        initialSection = 'Bitcoin';
+                    } else if (sectionNames.length > 0) {
+                        initialSection = sectionNames[0];
+                    }
+
+                    if (initialSection) {
+                        setActiveSection(initialSection);
+                        renderPdfsForSection(initialSection);
                     } else {
+                        renderSectionLinks();
                         currentSectionTitleElement.textContent = "No Sections Available";
                         selectSectionMessage.classList.remove('hidden');
+                        pdfListUl.classList.add('hidden');
+                        noFilesMessage.classList.add('hidden');
                     }
                 })
                 .catch(error => {
                     console.error("Could not load manifest.json:", error);
                     loadingMessage.classList.add('hidden');
-                    currentSectionTitleElement.textContent = "Error";
-                    selectSectionMessage.classList.remove('hidden');
+                    currentSectionTitleElement.textContent = "Error Loading Content";
+                    if(noFilesMessage){
+                        noFilesMessage.textContent = "Failed to load documents. Please check the console for errors or try again later.";
+                        noFilesMessage.classList.remove('hidden');
+                    }
+                    selectSectionMessage.classList.add('hidden');
+                    renderSectionLinks();
                 });
         });
     </script>
